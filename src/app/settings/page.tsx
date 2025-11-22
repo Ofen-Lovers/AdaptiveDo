@@ -5,7 +5,7 @@ import { User, Trash2, Moon, Sun, Monitor, Smartphone } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export default function SettingsPage() {
-  const { resetSimulation, theme, setTheme, deviceType, setDeviceType, userName, setUserName } = useUser();
+  const { resetSimulation, theme, themeMode, setThemeMode, deviceType, setDeviceType, userName, setUserName } = useUser();
 
   return (
     <div className="space-y-8">
@@ -47,23 +47,58 @@ export default function SettingsPage() {
           <div className="bg-surface-container-low p-8 rounded-[32px] border border-outline-variant/20">
             <h3 className="font-bold text-xl mb-6 text-on-surface">Appearance</h3>
             <div className="space-y-4">
-              <div className="flex items-center justify-between p-4 bg-surface-container rounded-2xl">
-                <div className="flex items-center gap-3">
+              <div className="flex flex-col gap-4 p-4 bg-surface-container rounded-2xl">
+                <div className="flex items-center gap-3 mb-2">
                   {theme === 'LIGHT' ? <Sun size={20} /> : <Moon size={20} />}
-                  <span className="font-bold text-on-surface">Dark Mode</span>
+                  <span className="font-bold text-on-surface">Theme Mode</span>
                 </div>
-                <button 
-                  onClick={() => setTheme(theme === 'LIGHT' ? 'DARK' : 'LIGHT')}
-                  className={cn(
-                    "w-12 h-7 rounded-full transition-colors relative",
-                    theme === 'DARK' ? "bg-primary" : "bg-outline-variant"
-                  )}
-                >
-                  <div className={cn(
-                    "w-5 h-5 bg-white rounded-full absolute top-1 transition-all shadow-sm",
-                    theme === 'DARK' ? "left-6" : "left-1"
-                  )} />
-                </button>
+                
+                <div className="grid grid-cols-3 gap-2 bg-surface-container-high p-1 rounded-xl">
+                  <button
+                    onClick={() => setThemeMode('AUTO')}
+                    className={cn(
+                      "flex flex-col items-center gap-2 p-3 rounded-lg transition-all",
+                      themeMode === 'AUTO' 
+                        ? "bg-primary text-on-primary shadow-sm" 
+                        : "text-on-surface-variant hover:bg-surface-container-highest"
+                    )}
+                  >
+                    <Monitor size={20} />
+                    <span className="text-xs font-bold">Auto</span>
+                  </button>
+                  
+                  <button
+                    onClick={() => setThemeMode('LIGHT')}
+                    className={cn(
+                      "flex flex-col items-center gap-2 p-3 rounded-lg transition-all",
+                      themeMode === 'LIGHT' 
+                        ? "bg-primary text-on-primary shadow-sm" 
+                        : "text-on-surface-variant hover:bg-surface-container-highest"
+                    )}
+                  >
+                    <Sun size={20} />
+                    <span className="text-xs font-bold">Light</span>
+                  </button>
+                  
+                  <button
+                    onClick={() => setThemeMode('DARK')}
+                    className={cn(
+                      "flex flex-col items-center gap-2 p-3 rounded-lg transition-all",
+                      themeMode === 'DARK' 
+                        ? "bg-primary text-on-primary shadow-sm" 
+                        : "text-on-surface-variant hover:bg-surface-container-highest"
+                    )}
+                  >
+                    <Moon size={20} />
+                    <span className="text-xs font-bold">Dark</span>
+                  </button>
+                </div>
+                
+                {themeMode === 'AUTO' && (
+                  <p className="text-xs text-on-surface-variant text-center">
+                    Automatically switches based on time (Light: 6am-6pm)
+                  </p>
+                )}
               </div>
             </div>
           </div>

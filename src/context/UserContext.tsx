@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { Task, UserMode, CognitiveLoad, TimeOfDay, DeviceType, UserContextType } from '@/types';
+import { Task, UserMode, CognitiveLoad, TimeOfDay, DeviceType, UserContextType, ThemeMode } from '@/types';
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
@@ -19,8 +19,31 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   // --- Context (Simulation) ---
   const [timeOfDay, setTimeOfDay] = useState<TimeOfDay>('DAY');
   const [deviceType, setDeviceType] = useState<DeviceType>('DESKTOP');
-  const [theme, setTheme] = useState<'LIGHT' | 'DARK'>('LIGHT'); // Decoupled theme
+  const [themeMode, setThemeMode] = useState<ThemeMode>('AUTO'); // User preference
   const [userName, setUserName] = useState("Kvass User");
+
+  // Computed theme based on mode and time
+  const [theme, setTheme] = useState<'LIGHT' | 'DARK'>('LIGHT');
+
+  // Update theme based on mode and time
+  useEffect(() => {
+    const updateTheme = () => {
+      if (themeMode === 'AUTO') {
+        const hour = new Date().getHours();
+        // Light mode between 6am (6) and 6pm (18)
+        const isDayTime = hour >= 6 && hour < 18;
+        setTheme(isDayTime ? 'LIGHT' : 'DARK');
+      } else {
+        setTheme(themeMode);
+      }
+    };
+
+    updateTheme(); // Initial check
+
+    // Check every minute for auto updates
+    const interval = setInterval(updateTheme, 60000);
+    return () => clearInterval(interval);
+  }, [themeMode]);
 
   // --- UI State (Lifted) ---
   const [editingTask, setEditingTask] = useState<Task | null>(null);
@@ -45,6 +68,19 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   // Auto-Panic: Check based on Kanban board structure
   const [panicDismissedAt, setPanicDismissedAt] = React.useState<number | null>(null);
   const [dismissedTaskCount, setDismissedTaskCount] = React.useState<number>(0);
+
+  // Calculate dynamic overdue count (Strictly before TODAY)
+  const now = new Date();
+  const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  
+  const overdueCount = tasks.filter(t => {
+    if (!t.completed && t.dueDate) {
+      const taskDate = new Date(t.dueDate);
+      const taskDay = new Date(taskDate.getFullYear(), taskDate.getMonth(), taskDate.getDate());
+      return taskDay < startOfToday;
+    }
+    return false;
+  }).length;
   
   useEffect(() => {
     // Count tasks based on Kanban board structure
@@ -52,13 +88,13 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     const inProgressCount = tasks.filter(t => t.inProgress && !t.completed).length;
     const totalWorkload = backlogCount + inProgressCount; // Total tasks to do
     
-    // Propose Panic Mode if:
-    // 1. Total workload (Backlog + In Progress) >= 4
+    // Propose Catch Up Mode if:
+    // 1. Total workload >= 4 OR Overdue Tasks > 0
     // 2. Not already in panic mode
     // 3. Haven't already proposed
-    // 4. Either never dismissed OR workload increased since dismissal
+    // 4. Either never dismissed OR (workload increased OR overdue count increased)
     const shouldPropose = 
-      totalWorkload >= 4 && 
+      (totalWorkload >= 4 || overdueCount > 0) && 
       cognitiveLoad !== 'PANIC' && 
       !isPanicProposed &&
       (dismissedTaskCount === 0 || totalWorkload > dismissedTaskCount);
@@ -67,8 +103,8 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
       setIsPanicProposed(true);
     }
     
-    // Reset proposal flag if workload drops below 4 (user made progress)
-    if (totalWorkload < 4) {
+    // Reset proposal flag if workload drops below 4 AND no overdue tasks
+    if (totalWorkload < 4 && overdueCount === 0) {
       if (isPanicProposed) {
         setIsPanicProposed(false);
       }
@@ -79,7 +115,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         setDismissedTaskCount(0);
       }
     }
-  }, [tasks, cognitiveLoad, isPanicProposed, panicDismissedAt, dismissedTaskCount]);
+  }, [tasks, cognitiveLoad, isPanicProposed, panicDismissedAt, dismissedTaskCount, overdueCount]);
 
   // --- Helper: Priority Sorting (High > Medium > Low) ---
   const sortTasks = (tasksToSort: Task[]) => {
@@ -160,7 +196,8 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     setMetrics({ tasksCompleted: 0, missedDeadlines: 0, streakDays: 0 });
     setTasks(initialTasks);
     setHasSeenOnboarding(false);
-    setTheme('LIGHT');
+    setHasSeenOnboarding(false);
+    setThemeMode('AUTO');
     setTimeOfDay('DAY');
     setIsPanicProposed(false);
     setUserName("Kvass User");
@@ -178,8 +215,10 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
       editingTask,
       hasSeenOnboarding,
       theme,
+      themeMode,
       userName,
       isPanicProposed,
+      overdueCount,
       
       addTask,
       toggleTask,
@@ -188,7 +227,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
       setTaskInProgress,
       setEditingTask,
       setHasSeenOnboarding,
-      setTheme,
+      setThemeMode,
       setUserName,
       setIsPanicProposed,
       setPanicDismissedAt,

@@ -41,7 +41,7 @@ export function PanicProposalModal() {
             
             <h2 className="text-2xl font-bold text-on-surface">Feeling Overwhelmed?</h2>
             <p className="text-on-surface-variant">
-              You have 4 or more incomplete tasks. We can switch to <strong>Focus Mode</strong> to help you tackle them one by one.
+              You have a high workload or missed deadlines. We can switch to <strong>Focus Mode</strong> to help you tackle them one by one.
             </p>
 
             <div className="flex flex-col w-full gap-3 mt-4">

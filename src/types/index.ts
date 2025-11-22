@@ -18,6 +18,7 @@ export type CognitiveLoad = 'LOW' | 'HIGH' | 'PANIC';
 
 export type TimeOfDay = 'MORNING' | 'DAY' | 'NIGHT';
 export type DeviceType = 'DESKTOP' | 'MOBILE';
+export type ThemeMode = 'AUTO' | 'LIGHT' | 'DARK';
 
 export interface UserContextType {
   // State
@@ -29,7 +30,8 @@ export interface UserContextType {
   // Context
   timeOfDay: TimeOfDay;
   deviceType: DeviceType;
-  theme: 'LIGHT' | 'DARK';
+  theme: 'LIGHT' | 'DARK'; // Computed theme based on themeMode
+  themeMode: ThemeMode; // User's theme preference
 
   // Metrics
   metrics: {
@@ -43,6 +45,7 @@ export interface UserContextType {
   hasSeenOnboarding: boolean;
   userName: string;
   isPanicProposed: boolean;
+  overdueCount: number;
 
   // Actions
   addTask: (task: Omit<Task, 'id' | 'createdAt'>) => void;
@@ -52,7 +55,7 @@ export interface UserContextType {
   setTaskInProgress: (id: string, inProgress: boolean) => void;
   setEditingTask: (task: Task | null) => void;
   setHasSeenOnboarding: (seen: boolean) => void;
-  setTheme: (theme: 'LIGHT' | 'DARK') => void;
+  setThemeMode: (mode: ThemeMode) => void;
   setUserName: (name: string) => void;
   setIsPanicProposed: (proposed: boolean) => void;
   setPanicDismissedAt: (timestamp: number | null) => void;

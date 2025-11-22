@@ -6,18 +6,28 @@ import { Moon, X } from "lucide-react";
 import { useState, useEffect } from "react";
 
 export function ThemeSuggestion() {
-  const { timeOfDay, theme, setTheme } = useUser();
+  const { timeOfDay, theme, themeMode, setThemeMode } = useUser();
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    // Only show suggestion if user is not in AUTO mode
+    if (themeMode === 'AUTO') {
+      setIsVisible(false);
+      return;
+    }
+
     // Show suggestion if it's Night time but user is in Light mode
-    if (timeOfDay === 'NIGHT' && theme === 'LIGHT') {
+    // OR if it's Day time but user is in Dark mode
+    const shouldSuggest = (timeOfDay === 'NIGHT' && theme === 'LIGHT') || 
+                          (timeOfDay === 'DAY' && theme === 'DARK');
+
+    if (shouldSuggest) {
       const timer = setTimeout(() => setIsVisible(true), 1000); // Small delay for effect
       return () => clearTimeout(timer);
     } else {
       setIsVisible(false);
     }
-  }, [timeOfDay, theme]);
+  }, [timeOfDay, theme, themeMode]);
 
   if (!isVisible) return null;
 
@@ -34,8 +44,12 @@ export function ThemeSuggestion() {
             <Moon size={24} />
           </div>
           <div className="flex-1">
-            <h4 className="font-bold text-on-surface text-sm">It's getting dark</h4>
-            <p className="text-xs text-on-surface-variant">Switch to Night Mode for better eye comfort?</p>
+            <h4 className="font-bold text-on-surface text-sm">
+              {timeOfDay === 'NIGHT' ? "It's getting dark" : "It's bright outside"}
+            </h4>
+            <p className="text-xs text-on-surface-variant">
+              Switch to Auto Mode to match the time of day?
+            </p>
           </div>
           <div className="flex gap-2">
             <button 
@@ -45,10 +59,10 @@ export function ThemeSuggestion() {
               <X size={20} />
             </button>
             <button 
-              onClick={() => setTheme('DARK')}
+              onClick={() => setThemeMode('AUTO')}
               className="px-4 py-2 bg-primary text-on-primary text-xs font-bold rounded-full shadow-sm hover:bg-primary/90"
             >
-              Switch
+              Auto Mode
             </button>
           </div>
         </div>

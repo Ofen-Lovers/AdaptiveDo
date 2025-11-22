@@ -5,18 +5,31 @@ import { useUser } from "@/context/UserContext";
 import { KanbanBoard } from "@/components/KanbanBoard";
 import { TimelineView } from "@/components/TimelineView";
 import { OnboardingModal } from "@/components/OnboardingModal";
-import { MotivationalModal } from "@/components/MotivationalModal";
+
 import { useState } from "react";
 import { LayoutList, Kanban, CalendarDays } from "lucide-react";
 
 export default function Home() {
-  const { userMode } = useUser();
+  const { userMode, cognitiveLoad, setCognitiveLoad, tasks, overdueCount, isPanicProposed } = useUser();
   const [view, setView] = useState<'LIST' | 'KANBAN' | 'TIMELINE'>('LIST');
 
   return (
     <>
       <OnboardingModal />
-      <MotivationalModal />
+      
+      {/* Manual Focus Mode Trigger */}
+      {cognitiveLoad !== 'PANIC' && !isPanicProposed && (tasks.filter(t => !t.completed).length >= 4 || overdueCount > 0) && (
+        <div className="mb-6">
+          <button
+            onClick={() => setCognitiveLoad('PANIC')}
+            className="w-full py-4 rounded-[24px] bg-error/10 text-error border border-error/20 hover:bg-error/20 transition-all flex items-center justify-center gap-3 font-bold animate-pulse"
+          >
+            <span className="text-2xl">🧘</span>
+            <span>Enter Focus Mode</span>
+          </button>
+        </div>
+      )}
+
       
       {/* View Switcher - Only for Experienced Users */}
       {userMode === 'EXPERIENCED' && (

@@ -18,7 +18,7 @@ interface AdaptiveLayoutProps {
 }
 
 export function AdaptiveLayout({ children }: AdaptiveLayoutProps) {
-  const { userMode, cognitiveLoad, setCognitiveLoad, timeOfDay, deviceType, editingTask, setEditingTask, theme } = useUser();
+  const { userMode, cognitiveLoad, setCognitiveLoad, timeOfDay, deviceType, editingTask, setEditingTask, theme, tasks, metrics, isPanicProposed, overdueCount } = useUser();
   const pathname = usePathname();
   
   // Sidebar visibility logic
@@ -31,6 +31,14 @@ export function AdaptiveLayout({ children }: AdaptiveLayoutProps) {
   
   // Background class based on Theme (not just time)
   const bgClass = theme === 'DARK' ? 'bg-surface-container-lowest' : 'bg-surface';
+
+  // Calculate if we should show the manual "Enter Catch Up" button
+  // Show if: Not in panic mode, not proposed, but workload is high or missed deadlines exist
+  const backlogCount = tasks.filter(t => !t.inProgress && !t.completed).length;
+  const inProgressCount = tasks.filter(t => t.inProgress && !t.completed).length;
+  const totalWorkload = backlogCount + inProgressCount;
+  
+  const showManualCatchUp = cognitiveLoad !== 'PANIC' && !isPanicProposed && (totalWorkload >= 4 || overdueCount > 0);
 
   return (
     <div className={cn("min-h-screen transition-colors duration-700 p-4 md:p-6 flex gap-6", bgClass)}>
@@ -58,7 +66,7 @@ export function AdaptiveLayout({ children }: AdaptiveLayoutProps) {
           {userMode === 'EXPERIENCED' && (
             <NavItem href="/dashboard" icon={<LayoutDashboard size={22} />} label="Dashboard" active={pathname === '/dashboard'} />
           )}
-            <div className="pt-8">
+            <div className="pt-8 space-y-2">
               <NavItem href="/settings" icon={<Settings size={22} />} label="Settings" active={pathname === '/settings'} />
             </div>
         </nav>
@@ -94,7 +102,7 @@ export function AdaptiveLayout({ children }: AdaptiveLayoutProps) {
           </motion.div>
         )}
 
-        <div className="p-6 md:p-10 max-w-5xl mx-auto">
+        <div className="p-6 md:p-10 max-w-7xl mx-auto">
           {children}
         </div>
       </main>

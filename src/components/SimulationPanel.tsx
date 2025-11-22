@@ -17,7 +17,7 @@ export function SimulationPanel() {
     deviceType,
     setDeviceType,
     theme,
-    setTheme,
+    setThemeMode,
     metrics,
     simulateMissedDeadline,
     triggerPanicMode,
@@ -93,7 +93,7 @@ export function SimulationPanel() {
               </button>
 
               <button
-                onClick={() => setTheme(theme === 'LIGHT' ? 'DARK' : 'LIGHT')}
+                onClick={() => setThemeMode(theme === 'LIGHT' ? 'DARK' : 'LIGHT')}
                 className={cn(
                   "p-3 rounded-[20px] flex flex-col items-center gap-2 transition-all border-2",
                   theme === 'LIGHT' 
@@ -135,8 +135,6 @@ export function SimulationPanel() {
                  <PersonaButton label="Pro" onClick={() => setMasteryScore(85)} />
                  <PersonaButton label="Stress" onClick={() => {
                   triggerPanicMode();
-                  setCognitiveLoad('PANIC');
-                  setIsPanicProposed(false); // Don't show proposal since we're directly entering
                 }} />
               </div>
             </div>

@@ -39,11 +39,11 @@ export function TaskItem({ task, isDraggable = false }: TaskItemProps) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.9 }}
       className={cn(
-        "group flex items-center gap-5 rounded-[24px] border transition-all duration-300",
+        "group relative flex items-center gap-5 rounded-[24px] border transition-all duration-300",
         task.completed 
           ? "bg-surface-container-highest/40 border-transparent opacity-60" 
           : "bg-surface-container-lowest border-outline-variant/30 hover:border-primary/30 hover:shadow-md hover:-translate-y-0.5",
-        isBeginner ? "p-6" : "p-5",
+        isBeginner ? "p-6 pb-10" : "p-5 pb-9", // Extra bottom padding for actions
         isDragging && "opacity-50 cursor-grabbing",
         isDraggable && !isDragging && "cursor-grab"
       )}
@@ -106,18 +106,21 @@ export function TaskItem({ task, isDraggable = false }: TaskItemProps) {
       </div>
 
       {/* Actions */}
-      <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+      {/* Actions - Bottom Right, Hover/Active only */}
+      <div className="absolute bottom-2 right-2 flex items-center gap-1 opacity-0 group-hover:opacity-100 group-active:opacity-100 focus-within:opacity-100 transition-opacity z-10">
         <button
-          onClick={() => setEditingTask(task)}
-          className="p-3 text-on-surface-variant hover:text-primary hover:bg-primary-container rounded-xl transition-all"
+          onClick={(e) => { e.stopPropagation(); setEditingTask(task); }}
+          className="p-2 text-on-surface-variant hover:text-primary hover:bg-primary-container rounded-lg transition-all"
+          title="Edit"
         >
-          <Pencil size={isBeginner ? 22 : 20} />
+          <Pencil size={18} />
         </button>
         <button
-          onClick={() => deleteTask(task.id)}
-          className="p-3 text-on-surface-variant hover:text-error hover:bg-error-container rounded-xl transition-all"
+          onClick={(e) => { e.stopPropagation(); deleteTask(task.id); }}
+          className="p-2 text-on-surface-variant hover:text-error hover:bg-error-container rounded-lg transition-all"
+          title="Delete"
         >
-          <Trash2 size={isBeginner ? 22 : 20} />
+          <Trash2 size={18} />
         </button>
       </div>
     </motion.div>
