@@ -1,26 +1,173 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* Material 3 Color System (Lavender/Violet Theme) */
+  --color-primary: hsl(var(--primary));
+  --color-on-primary: hsl(var(--on-primary));
+  --color-primary-container: hsl(var(--primary-container));
+  --color-on-primary-container: hsl(var(--on-primary-container));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-on-secondary: hsl(var(--on-secondary));
+  --color-secondary-container: hsl(var(--secondary-container));
+  --color-on-secondary-container: hsl(var(--on-secondary-container));
+
+  --color-tertiary: hsl(var(--tertiary));
+  --color-on-tertiary: hsl(var(--on-tertiary));
+  --color-tertiary-container: hsl(var(--tertiary-container));
+  --color-on-tertiary-container: hsl(var(--on-tertiary-container));
+
+  --color-error: hsl(var(--error));
+  --color-on-error: hsl(var(--on-error));
+  --color-error-container: hsl(var(--error-container));
+  --color-on-error-container: hsl(var(--on-error-container));
+
+  --color-background: hsl(var(--background));
+  --color-on-background: hsl(var(--on-background));
+
+  --color-surface: hsl(var(--surface));
+  --color-on-surface: hsl(var(--on-surface));
+  --color-surface-variant: hsl(var(--surface-variant));
+  --color-on-surface-variant: hsl(var(--on-surface-variant));
+  
+  --color-surface-container-lowest: hsl(var(--surface-container-lowest));
+  --color-surface-container-low: hsl(var(--surface-container-low));
+  --color-surface-container: hsl(var(--surface-container));
+  --color-surface-container-high: hsl(var(--surface-container-high));
+  --color-surface-container-highest: hsl(var(--surface-container-highest));
+
+  --color-outline: hsl(var(--outline));
+  --color-outline-variant: hsl(var(--outline-variant));
+
+  /* Legacy Mappings for compatibility */
+  --color-border: var(--color-outline-variant);
+  --color-input: var(--color-outline);
+  --color-ring: var(--color-primary);
+  --color-foreground: var(--color-on-background);
+  --color-muted: var(--color-surface-container-highest);
+  --color-muted-foreground: var(--color-on-surface-variant);
+  --color-card: var(--color-surface-container-low);
+  --color-card-foreground: var(--color-on-surface);
+  --color-popover: var(--color-surface-container);
+  --color-popover-foreground: var(--color-on-surface);
+  --color-destructive: var(--color-error);
+  --color-destructive-foreground: var(--color-on-error);
+
+  /* Shapes - Extra Large Squircles */
+  --radius-none: 0px;
+  --radius-xs: 8px;
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --radius-2xl: 40px;
+  --radius-3xl: 56px;
+  --radius-full: 9999px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* Light Mode - Pastel Lavender Theme */
+    --primary: 265 90% 60%; /* Vibrant Violet */
+    --on-primary: 0 0% 100%;
+    --primary-container: 265 100% 94%;
+    --on-primary-container: 265 100% 20%;
+
+    --secondary: 280 40% 50%;
+    --on-secondary: 0 0% 100%;
+    --secondary-container: 280 60% 94%;
+    --on-secondary-container: 280 60% 20%;
+
+    --tertiary: 320 70% 60%; /* Pinkish accent */
+    --on-tertiary: 0 0% 100%;
+    --tertiary-container: 320 100% 94%;
+    --on-tertiary-container: 320 100% 20%;
+
+    --error: 0 80% 60%;
+    --on-error: 0 0% 100%;
+    --error-container: 0 100% 96%;
+    --on-error-container: 0 100% 20%;
+
+    --background: 270 30% 98%; /* Very pale lavender tint */
+    --on-background: 270 20% 10%;
+
+    --surface: 270 30% 98%;
+    --on-surface: 270 20% 10%;
+    --surface-variant: 270 15% 90%;
+    --on-surface-variant: 270 10% 40%;
+
+    --surface-container-lowest: 0 0% 100%;
+    --surface-container-low: 270 30% 96%;
+    --surface-container: 270 30% 94%;
+    --surface-container-high: 270 30% 92%;
+    --surface-container-highest: 270 30% 90%;
+
+    --outline: 270 10% 70%;
+    --outline-variant: 270 15% 85%;
+  }
+
+  .dark {
+    /* Dark Mode - Deep Midnight Violet Theme */
+    --primary: 265 100% 80%; /* Pastel Violet */
+    --on-primary: 265 90% 10%;
+    --primary-container: 265 90% 30%;
+    --on-primary-container: 265 100% 95%;
+
+    --secondary: 280 50% 75%;
+    --on-secondary: 280 50% 10%;
+    --secondary-container: 280 50% 30%;
+    --on-secondary-container: 280 50% 95%;
+
+    --tertiary: 320 80% 80%;
+    --on-tertiary: 320 80% 10%;
+    --tertiary-container: 320 80% 30%;
+    --on-tertiary-container: 320 80% 95%;
+
+    --error: 0 100% 80%;
+    --on-error: 0 100% 10%;
+    --error-container: 0 100% 30%;
+    --on-error-container: 0 100% 95%;
+
+    --background: 270 50% 4%; /* Deep Midnight */
+    --on-background: 270 10% 95%;
+
+    --surface: 270 50% 4%;
+    --on-surface: 270 10% 95%;
+    --surface-variant: 270 20% 20%;
+    --on-surface-variant: 270 10% 80%;
+
+    --surface-container-lowest: 270 50% 2%;
+    --surface-container-low: 270 50% 8%;
+    --surface-container: 270 50% 10%;
+    --surface-container-high: 270 50% 14%;
+    --surface-container-highest: 270 50% 18%;
+
+    --outline: 270 10% 50%;
+    --outline-variant: 270 10% 30%;
+  }
+
+  body {
+    @apply bg-background text-on-background font-sans;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Material Utilities */
+@layer utilities {
+  .elevation-1 {
+    box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.30);
+  }
+  .elevation-2 {
+    box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.30);
+  }
+  .elevation-3 {
+    box-shadow: 0px 4px 8px 3px rgba(0, 0, 0, 0.15), 0px 1px 3px 0px rgba(0, 0, 0, 0.30);
+  }
+  
+  /* Squircle Utility - approximates the super-rounded look */
+  .squircle {
+    @apply rounded-2xl;
+  }
+  .squircle-lg {
+    @apply rounded-[32px];
+  }
 }
