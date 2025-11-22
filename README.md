@@ -1,5 +1,7 @@
 # Adaptive To-Do App
 
+[Deployed in Vercel](https://adaptive-do.vercel.app/)
+
 ## Overview
 
 **Adaptive To-Do App** is a modern, responsive task management application built with **Next.js** and **TypeScript**. It demonstrates adaptive interface design by automatically adjusting the UI based on user workload, overdue tasks, and user experience level. The app includes:
@@ -89,7 +91,7 @@ src/
 
 ## Adaptive Features Detail
 
-### Focus Mode (formerly Catch Up Mode)
+### Focus Mode
 
 - **When it appears**:
   1. **High workload** – 4 or more incomplete tasks.
@@ -124,33 +126,3 @@ This ensures tasks added **today** (e.g., via Quick Add) are not considered over
 | `lint` | Runs ESLint to check code quality. |
 
 ---
-
-## Contributing
-
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository.
-2. Create a feature branch (`git checkout -b feature/your-feature`).
-3. Make your changes and ensure the app still builds.
-4. Run `npm run lint` and fix any issues.
-5. Open a Pull Request describing the changes.
-
-When adding new adaptive logic, update the **Focus Mode** documentation accordingly.
-
----
-
-## License
-
-This project is licensed under the MIT License – see the `LICENSE` file for details.
-
----
-
-## Acknowledgements
-
-- Built with **Next.js** and **TypeScript**.
-- UI icons from **lucide-react**.
-- Inspired by adaptive interface research and the original "Catch Up Mode" implementation.
-
----
-
-*Happy coding!*
