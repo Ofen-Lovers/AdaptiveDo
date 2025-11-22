@@ -6,13 +6,13 @@
 
 **Adaptive To-Do App** is a modern, responsive task management application built with **Next.js** and **TypeScript**. It demonstrates adaptive interface design by automatically adjusting the UI based on user workload, overdue tasks, and user experience level. The app includes:
 
-- A Kanban board, list view, and timeline view.
+- Kanban, list, and timeline views.
 - Adaptive **Focus Mode** (formerly Catch Up Mode) that proposes a low‑cognitive‑load view when the user is overwhelmed.
-- Dynamic overdue‑task detection that only triggers when a task's due date is **strictly before today**.
+- Dynamic overdue‑task detection (tasks overdue only if due date is before today).
 - Manual entry of Focus Mode directly from the main page.
 - Theme support (auto, light, dark) and responsive design.
 
-The codebase is structured to be easy to extend and serves as a teaching example for adaptive UI patterns.
+The implementation satisfies the laboratory activity described in the [instructions](file:///home/kvass/.gemini/antigravity/scratch/adaptive-todo-app/instructions.md).
 
 ---
 
@@ -66,10 +66,10 @@ The page auto‑reloads as you edit files.
 ```
 src/
 ├─ app/                # Next.js app router (pages, layout, etc.)
-│   ├─ page.tsx        # Home page – contains view switcher and manual Focus button
+│   ├─ page.tsx        # Home page – view switcher and manual Focus button
 │   └─ layout.tsx      # Global layout wrapper
 ├─ components/         # Reusable UI components
-│   ├─ AdaptiveLayout.tsx   # Main layout, sidebar, and navigation
+│   ├─ AdaptiveLayout.tsx   # Main layout, sidebar, navigation
 │   ├─ TaskItem.tsx         # Individual task card
 │   ├─ PanicProposalModal.tsx   # Focus Mode proposal modal
 │   ├─ SimulationPanel.tsx   # Stress button for testing overload
@@ -91,7 +91,7 @@ src/
 
 ## Adaptive Features Detail
 
-### Focus Mode
+### Focus Mode (formerly Catch Up Mode)
 
 - **When it appears**:
   1. **High workload** – 4 or more incomplete tasks.
@@ -116,6 +116,19 @@ This ensures tasks added **today** (e.g., via Quick Add) are not considered over
 
 ---
 
+## Lab Assignment Alignment
+
+The following sections map the implementation to the requirements outlined in the [lab instructions](file:///home/kvass/.gemini/antigravity/scratch/adaptive-todo-app/instructions.md):
+
+- **User Model** – Supports the required **Beginner** and **Experienced** states, plus a **Behavior‑Based** state (overdue tasks trigger Focus Mode). See *User Model* section in the instructions.
+- **Adaptive Variations** – Beginner Mode offers onboarding and simplified UI; Experienced Mode provides Quick Add and compact layout; the behavior‑based adaptation is realized via the overdue‑task logic and Focus Mode proposal.
+- **Figma Prototype Requirements** – Capture screens for Beginner, Experienced, and Focus Mode states. Annotate conditional logic (`totalWorkload >= 4` or `overdueCount > 0`).
+- **Usability Testing & Heuristic Evaluation** – The **Simulation Panel** and **Stress** button enable overload scenarios for testing, matching the *Usability Testing* section.
+- **Ethical Reflection** – Design respects autonomy by prompting only when needed and offering a manual override, aligning with the *Ethical Reflection* guidelines.
+- **Submission Guidelines** – Repository already contains required artifacts (README, code, `user_model.md`). Add screenshots of the three adaptive states and the heuristic report to complete the submission.
+
+---
+
 ## Development Scripts
 
 | Script | Description |
@@ -126,3 +139,33 @@ This ensures tasks added **today** (e.g., via Quick Add) are not considered over
 | `lint` | Runs ESLint to check code quality. |
 
 ---
+
+## Contributing
+
+Contributions are welcome! Please follow these steps:
+
+1. Fork the repository.
+2. Create a feature branch (`git checkout -b feature/your-feature`).
+3. Make your changes and ensure the app still builds.
+4. Run `npm run lint` and fix any issues.
+5. Open a Pull Request describing the changes.
+
+When adding new adaptive logic, update the **Focus Mode** documentation accordingly.
+
+---
+
+## License
+
+This project is licensed under the MIT License – see the `LICENSE` file for details.
+
+---
+
+## Acknowledgements
+
+- Built with **Next.js** and **TypeScript**.
+- UI icons from **lucide-react**.
+- Inspired by adaptive interface research and the original "Catch Up Mode" implementation.
+
+---
+
+*Happy coding!*
