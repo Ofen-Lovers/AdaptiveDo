@@ -47,7 +47,23 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
 
   // --- UI State (Lifted) ---
   const [editingTask, setEditingTask] = useState<Task | null>(null);
-  const [hasSeenOnboarding, setHasSeenOnboarding] = useState(false);
+  const [hasSeenOnboarding, setHasSeenOnboardingState] = useState(false);
+
+  const setHasSeenOnboarding = (value: boolean) => {
+    setHasSeenOnboardingState(value);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('adaptiveDo_hasSeenOnboarding', JSON.stringify(value));
+    }
+  };
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('adaptiveDo_hasSeenOnboarding');
+      if (stored) {
+        setHasSeenOnboardingState(JSON.parse(stored));
+      }
+    }
+  }, []);
   const [isPanicProposed, setIsPanicProposed] = useState(false);
 
   // --- Metrics ---
