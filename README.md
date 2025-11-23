@@ -82,7 +82,7 @@ src/
 
 ### Core Concepts
 
-- **UserContext** – Central store for tasks, user mode (`BEGINNER`, `INTERMEDIATE`, `EXPERIENCED`), cognitive load (`LOW`, `HIGH`, `PANIC`), and adaptive metrics. It also calculates `overdueCount` on each render.
+- **UserContext** – Central store for tasks, user mode (`BEGINNER` < 30, `INTERMEDIATE` 30-79, `EXPERIENCED` 80+), cognitive load (`LOW`, `HIGH`, `PANIC`), and adaptive metrics. It also calculates `overdueCount` on each render.
 - **Focus Mode Logic** – Implemented in `UserContext`'s `useEffect`. The prompt appears when `totalWorkload >= 4` **or** `overdueCount > 0`. It automatically resets when workload drops below 4 **and** there are no overdue tasks.
 - **Manual Trigger** – Rendered in `app/page.tsx`. Clicking the button sets `cognitiveLoad` to `'PANIC'`, showing the low‑cognitive‑load UI.
 - **Theme Mode** – Controlled via `themeMode` (`AUTO`, `LIGHT`, `DARK`). Auto mode switches based on the current hour.

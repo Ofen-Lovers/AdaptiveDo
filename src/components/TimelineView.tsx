@@ -7,11 +7,11 @@ import { cn } from "@/lib/utils";
 export function TimelineView() {
   const { tasks } = useUser();
   
-  // Sort by due date
+  // Sort by due date (latest first)
   const sortedTasks = [...tasks].sort((a, b) => {
     if (!a.dueDate) return 1;
     if (!b.dueDate) return -1;
-    return a.dueDate.getTime() - b.dueDate.getTime();
+    return b.dueDate.getTime() - a.dueDate.getTime();
   });
 
   return (
