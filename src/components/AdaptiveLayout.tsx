@@ -9,6 +9,7 @@ import { TaskEditModal } from "./TaskEditModal";
 import { ThemeSuggestion } from "./ThemeSuggestion";
 import { PanicProposalModal } from "./PanicProposalModal";
 import { ConfettiCelebration } from "./ConfettiCelebration";
+import { FeatureUnlockNotification } from "./FeatureUnlockNotification";
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
@@ -160,6 +161,7 @@ export function AdaptiveLayout({ children }: AdaptiveLayoutProps) {
       <ThemeSuggestion />
       <PanicProposalModal />
       <ConfettiCelebration />
+      <FeatureUnlockNotification />
       
       {/* Global Edit Modal */}
       {editingTask && (

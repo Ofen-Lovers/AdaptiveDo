@@ -3,10 +3,10 @@
 import { useUser } from "@/context/UserContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
-import { CheckCircle2, ArrowRight, ArrowLeft } from "lucide-react";
+import { CheckCircle2, ArrowRight, ArrowLeft, Sun, Moon, Monitor } from "lucide-react";
 
 export function OnboardingModal() {
-  const { hasSeenOnboarding, setHasSeenOnboarding } = useUser();
+  const { hasSeenOnboarding, setHasSeenOnboarding, themeMode, setThemeMode } = useUser();
   const [isOpen, setIsOpen] = useState(false);
   const [step, setStep] = useState(0);
 
@@ -42,6 +42,41 @@ export function OnboardingModal() {
           <div className="bg-secondary-container p-4 rounded-xl text-on-secondary-container flex gap-3 items-center">
             <span className="text-2xl">🧠</span>
             <p className="text-sm font-medium">Designed to reduce cognitive load and prevent burnout.</p>
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: "Choose Your Style",
+      subtitle: "Light, Dark, or Auto",
+      icon: "🎨",
+      content: (
+        <div className="space-y-6">
+          <p className="text-on-surface-variant text-center">
+            Select the theme that fits your vibe. You can change this later in settings.
+          </p>
+          <div className="grid grid-cols-3 gap-3">
+            <button
+              onClick={() => setThemeMode('LIGHT')}
+              className={`p-4 rounded-2xl border-2 flex flex-col items-center gap-2 transition-all ${themeMode === 'LIGHT' ? 'border-primary bg-primary/10 text-primary' : 'border-outline-variant hover:bg-surface-container-high'}`}
+            >
+              <Sun size={24} />
+              <span className="text-xs font-bold">Light</span>
+            </button>
+            <button
+              onClick={() => setThemeMode('DARK')}
+              className={`p-4 rounded-2xl border-2 flex flex-col items-center gap-2 transition-all ${themeMode === 'DARK' ? 'border-primary bg-primary/10 text-primary' : 'border-outline-variant hover:bg-surface-container-high'}`}
+            >
+              <Moon size={24} />
+              <span className="text-xs font-bold">Dark</span>
+            </button>
+            <button
+              onClick={() => setThemeMode('AUTO')}
+              className={`p-4 rounded-2xl border-2 flex flex-col items-center gap-2 transition-all ${themeMode === 'AUTO' ? 'border-primary bg-primary/10 text-primary' : 'border-outline-variant hover:bg-surface-container-high'}`}
+            >
+              <Monitor size={24} />
+              <span className="text-xs font-bold">Auto</span>
+            </button>
           </div>
         </div>
       ),
